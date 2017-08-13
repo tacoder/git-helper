@@ -1,14 +1,14 @@
-CXX = g++
-CPPFLAGS = -lncurses       # put pre-processor settings (-I, -D, etc) here
-CXXFLAGS = -Wall  # put compiler settings here
-LDFLAGS =         # put linker settings here
+CC = g++
+CFLAGS = -Wall
+DEPS = intro.cpp
+OBJ = git/util.o
 
-all: t
+%.o: %.cpp 
+	$(CC) $(CFLAGS) -c $< -o  $@
 
-t: intro.cpp
-	g++  intro.cpp -lncurses -o intro.out 
+intro: $(OBJ) $(DEPS)
+	$(CC) $(CFLAGS) intro.cpp -o $@ $< -lncurses
 
-run:
-	./intro
-
-
+%.cpp:
+	$(CC) $(CFLAGS) -c  $@ $<
+	
