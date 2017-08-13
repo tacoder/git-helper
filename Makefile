@@ -6,7 +6,7 @@ OBJ = git/util.o
 %.o: %.cpp 
 	$(CC) $(CFLAGS) -c $< -o  $@
 
-intro: $(OBJ) $(DEPS)
+intro.out: $(OBJ) $(DEPS)
 	$(CC) $(CFLAGS) intro.cpp -o $@ $< -lncurses
 
 %.cpp:
