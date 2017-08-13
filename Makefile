@@ -6,7 +6,7 @@ LDFLAGS =         # put linker settings here
 all: t
 
 t: intro.cpp
-	g++ intro.cpp -lncurses -o intro
+	g++  intro.cpp -lncurses -o intro.out 
 
 run:
 	./intro
