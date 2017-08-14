@@ -3,6 +3,7 @@
 #include <string>
 #include "git/util.h"
 #include "util/logger.h"
+#include "util/system.h"
 using namespace std;
 
 
@@ -27,7 +28,8 @@ int main (){
 void initialize_application(){
 	Logger::instance()->enableLogs();
     Logger::instance()->log("\n\n\n========Application starting!!!========");
-    Logger::instance()->log("fate here");
+    Logger::instance()->log(GetStdoutFromCommand("date"));
+    Logger::instance()->log(GetStdoutFromCommand("git status"));
 
     initialize_screen();
     initialize_variables();
