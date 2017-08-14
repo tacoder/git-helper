@@ -1,6 +1,10 @@
-#include<ncurses.h>
+#include <ncurses.h>
+#include<iostream>
+#include <string>
 #include "git/util.h"
+#include "util/logger.h"
 using namespace std;
+
 
 void initialize_application();
 void finalize_application();
@@ -21,6 +25,10 @@ int main (){
 }
 
 void initialize_application(){
+	Logger::instance()->enableLogs();
+    Logger::instance()->log("\n\n\n========Application starting!!!========");
+    Logger::instance()->log("fate here");
+
     initialize_screen();
     initialize_variables();
     draw_screen();
@@ -28,7 +36,7 @@ void initialize_application(){
 
 void initialize_screen(){
     initscr();
-//    noecho();
+    noecho();
     cbreak();   
     keypad(stdscr, TRUE);
 }
@@ -41,9 +49,7 @@ void initialize_variables(){
 
 void draw_screen(){
     int maxr,maxc;
-    WINDOW *my_win;
     getmaxyx(stdscr,maxr,maxc);
-   
 
     /* Dimentions remaining constant across windows */
     int startC = 3;
@@ -59,20 +65,24 @@ void draw_screen(){
     /* Initialize git status window */
     int statusR = 1;
     int statusH = maxr - inputH - branchH -1;
-    create_newwin(statusH,width,1,startC);
+    create_newwin(statusH,width,statusR,startC);
 }
 
 WINDOW *create_newwin(int height, int width, int starty, int startx)
 {       
+    Logger::instance()->log("Creating window of height" + to_string(height) + 
+            ", width: " + to_string(width) +
+            " at (x:" + to_string(startx) + 
+            ", y:" + to_string(starty) + ")");
     refresh();
     WINDOW *local_win;
 
-        local_win = newwin(height, width, starty, startx);
-        box(local_win, 0 , 0);          /* 0, 0 gives default characters 
-                                         * for the vertical and horizontal
-                                         * lines                        */
-        wrefresh(local_win);            /* Show that box                */
+    local_win = newwin(height, width, starty, startx);
+    box(local_win, 0 , 0);          /* 0, 0 gives default characters 
+                                     * for the vertical and horizontal
+                                     * lines                        */
+    wrefresh(local_win);            /* Show that box                */
 
-        return local_win;
+    return local_win;
 }
 
