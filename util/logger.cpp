@@ -2,6 +2,11 @@
 void Logger::log(string message){
 	if(Logger::logEnabled) lout<<message<<endl;
 }
+
+ void Logger::log(int message){
+     if(Logger::logEnabled) lout<<message<<endl;
+ }
+
 void Logger::enableLogs(){
 	logEnabled = true;
 	lout.open("git-helper.log", std::ios_base::app);

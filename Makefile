@@ -7,7 +7,7 @@ OBJ = git/util.o util/logger.o util/system.o
 	$(CC) $(CFLAGS) -c $< -o  $@
 
 intro.out: $(OBJ) $(DEPS)
-	$(CC) $(CFLAGS) intro.cpp -o $@ $(OBJ) -lncurses
+	$(CC) $(CFLAGS) intro.cpp -o $@ $(OBJ) -lncurses -lmenu
 
 %.cpp:
 	$(CC) $(CFLAGS) -c  $@ $<

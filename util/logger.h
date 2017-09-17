@@ -13,6 +13,7 @@ class Logger
     Logger(){}
   public:
 	void log(string message);
+	void log(int message);
     void enableLogs();
     static Logger* instance();
 /*    static Logger* instance(){
