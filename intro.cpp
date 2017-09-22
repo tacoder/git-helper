@@ -19,6 +19,7 @@ ITEM** getMenuItemsFromVector(vector<string>);
 WINDOW *create_newwin(int height, int width, int starty, int startx);
 WINDOW * statusWin;
 WINDOW * branchWin;
+WINDOW * branchWinDer;
 WINDOW * searchWin;
 MENU * branchMenu;
 
@@ -126,14 +127,15 @@ void setBranches(vector <string> branches){
 branchMenu = my_menu;
         set_menu_win(my_menu, branchWin);
     //set_menu_format(my_menu, 10, 1);
-            set_menu_mark(my_menu, " * ");\
+            set_menu_mark(my_menu, std::itoa(addch(ACS_PI)));
 
                 WINDOW* my_menu_win = branchWin;
-        mvwaddch(my_menu_win, 2, 0, ACS_LTEE);
-                mvwhline(my_menu_win, 2, 1, ACS_HLINE, 38);
-                    mvwaddch(my_menu_win, 2, 39, ACS_RTEE);
-                        mvprintw(LINES - 2, 0, "F1 to exit");
-                        box(branchWin, 0, 0);
+//                    set_menu_sub(my_menu, derwin(my_menu_win, 5, 5, 1, 1));
+                    set_menu_sub(my_menu, branchWinDer);
+//        mvwaddch(my_menu_win, 2, 0, ACS_LTEE);
+//                mvwhline(my_menu_win, 2, 1, ACS_HLINE, 38);
+//                    mvwaddch(my_menu_win, 2, 39, ACS_RTEE);
+                        //box(branchWin, 0, 0);
 
             post_menu(my_menu);
         refresh();
@@ -200,6 +202,7 @@ void draw_screen(){
     int branchH = (maxr-6)/2;
     int branchR = maxr - 3 - branchH;
     branchWin = create_newwin(branchH,width,branchR,startC);
+    branchWinDer = derwin(branchWin,branchH-2,width-2,1,1);
     /* Initialize git status window */
     int statusR = 1;
     int statusH = maxr - inputH - branchH -1;
