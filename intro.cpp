@@ -7,7 +7,7 @@
 #include <menu.h>
 using namespace std;
 
-
+// Function definitions
 void initialize_application();
 void finalize_application();
 void initialize_variables();
@@ -16,14 +16,17 @@ void initialize_screen();
 void start_application();
 void setBranches(vector <string>);
 void remove_search_char();
+void set_git_status();
+void add_search_char(char c);
 ITEM** getMenuItemsFromVector(vector<string>);
 WINDOW *create_newwin(int height, int width, int starty, int startx);
+
+// Global variable
 WINDOW * statusWin;
 WINDOW * branchWin;
 WINDOW * branchWinDer;
 WINDOW * searchWin;
 MENU * branchMenu;
-void add_search_char(char c);
 string searchStr;
 
 int main (){
@@ -31,7 +34,7 @@ int main (){
     initialize_application();
     vector<string> branches = getAllBranches();
     
-	start_application();
+    start_application();
 
     // Cleanup!
     finalize_application();
@@ -101,30 +104,28 @@ void start_application(){
     branches.push_back("weqasdf");
     branches.push_back("weqasdfend");
     setBranches(branches);
-int c;
-	while((c = getch()) != KEY_F(1))
+    int c;
+    while((c = getch()) != KEY_F(1)) {
+        Logger::instance()->log("You have pressed:" );
+        Logger::instance()->log(c);
 
-	{
-Logger::instance()->log("You have pressed:" );
-Logger::instance()->log((c));
-
-       switch(c)
-	        {	case KEY_DOWN:
-				menu_driver(branchMenu, REQ_DOWN_ITEM);
-				break;
-			case KEY_UP:
-				menu_driver(branchMenu, REQ_UP_ITEM);
-				break;
+        switch(c) {
+            case KEY_DOWN:
+                menu_driver(branchMenu, REQ_DOWN_ITEM);
+                break;
+            case KEY_UP:
+                menu_driver(branchMenu, REQ_UP_ITEM);
+                break;
             case KEY_BACKSPACE:
                 remove_search_char();
                 break;
             default:
                 add_search_char(c);
-		}
-                wrefresh(branchWin);
-                wrefresh(statusWin);
-                wrefresh(searchWin);
-	}	
+        }
+        wrefresh(branchWin);
+        wrefresh(statusWin);
+        wrefresh(searchWin);
+    }    
 
 
 }
@@ -143,24 +144,17 @@ void remove_search_char(){
 }
 
 void setBranches(vector <string> branches){
-	//setMenuInWindow();
-     ITEM** menuItems = getMenuItemsFromVector(branches);
-     MENU * my_menu = new_menu((ITEM **)menuItems);
-branchMenu = my_menu;
-        set_menu_win(my_menu, branchWin);
+    //setMenuInWindow();
+    ITEM** menuItems = getMenuItemsFromVector(branches);
+    MENU * my_menu = new_menu((ITEM **)menuItems);
+    branchMenu = my_menu;
+    set_menu_win(my_menu, branchWin);
     //set_menu_format(my_menu, 10, 1);
-            set_menu_mark(my_menu, " * ");
-
-//                    set_menu_sub(my_menu, derwin(my_menu_win, 5, 5, 1, 1));
-                    set_menu_sub(my_menu, branchWinDer);
-//        mvwaddch(my_menu_win, 2, 0, ACS_LTEE);
-//                mvwhline(my_menu_win, 2, 1, ACS_HLINE, 38);
-//                    mvwaddch(my_menu_win, 2, 39, ACS_RTEE);
-                        //box(branchWin, 0, 0);
-
-            post_menu(my_menu);
-        refresh();
-wrefresh(branchWin); 
+    set_menu_mark(my_menu, " * ");
+    set_menu_sub(my_menu, branchWinDer);
+    post_menu(my_menu);
+    refresh();
+    wrefresh(branchWin); 
 }
 
 ITEM** getMenuItemsFromVector(vector<string> menuItems){
@@ -168,21 +162,17 @@ ITEM** getMenuItemsFromVector(vector<string> menuItems){
     int n_choices = menuItems.size();
     my_items = (ITEM **)calloc(n_choices + 1, sizeof(ITEM *));
      
-    for(int i = 0; i < n_choices; ++i)
-	{/*const char * branch = menuItems[i].c_str();*/
-        
+    for(int i = 0; i < n_choices; ++i){
         char* ca = new char[menuItems[i].size()+1];
         std::copy(menuItems[i].begin(), menuItems[i].end(), ca);
-ca[menuItems[i].size()] = '\0';
+        ca[menuItems[i].size()] = '\0';
         my_items[i] = new_item(ca, "");
-		/* Set the user pointer */
-//		set_item_userptr(my_items[i], func);
-	}	
+    }    
     my_items[n_choices] = (ITEM *)NULL;
     return my_items;
 }
 void initialize_application(){
-	Logger::instance()->enableLogs();
+    Logger::instance()->enableLogs();
     Logger::instance()->log("\n\n\n========Application starting!!!========");
     Logger::instance()->log(GetStdoutFromCommand("date"));
     Logger::instance()->log(GetStdoutFromCommand("git status"));
