@@ -15,6 +15,7 @@ void draw_screen();
 void initialize_screen();
 void start_application();
 void setBranches(vector <string>);
+void remove_search_char();
 ITEM** getMenuItemsFromVector(vector<string>);
 WINDOW *create_newwin(int height, int width, int starty, int startx);
 WINDOW * statusWin;
@@ -22,6 +23,8 @@ WINDOW * branchWin;
 WINDOW * branchWinDer;
 WINDOW * searchWin;
 MENU * branchMenu;
+void add_search_char(char c);
+string searchStr;
 
 int main (){
 
@@ -47,6 +50,44 @@ void start_application(){
     branches.push_back("weqasdf");
     branches.push_back("weqasdf");
     branches.push_back("weqasdf");
+    branches.push_back("weqas3f");
+    branches.push_back("weqasdf");
+    branches.push_back("weqasdf");
+    branches.push_back("weqasdf");
+    branches.push_back("weqasdf");
+    branches.push_back("weqasdf");
+    branches.push_back("weqasdf");
+    branches.push_back("weqaslnig fuckign branch namedf");
+    branches.push_back("weqasdf");
+    branches.push_back("weqasdf");
+    branches.push_back("weqas3f");
+    branches.push_back("weqasdf");
+    branches.push_back("weqasdf");
+    branches.push_back("weqasdf");
+    branches.push_back("weqasdf");
+    branches.push_back("weqasdf");
+    branches.push_back("weqas2f");
+    branches.push_back("weqasdf");
+    branches.push_back("weqasdf");
+    branches.push_back("weqasdf");
+    branches.push_back("weqasdf");
+    branches.push_back("weqasdf");
+    branches.push_back("weqasdf");
+    branches.push_back("weqas2f");
+    branches.push_back("weqasdf");
+    branches.push_back("weqasdf");
+    branches.push_back("weqasdf");
+    branches.push_back("weqasdf");
+    branches.push_back("weqasdf");
+    branches.push_back("weqas7f");
+    branches.push_back("weqasdf");
+    branches.push_back("weqasdf");
+    branches.push_back("weqasdf");
+    branches.push_back("weqasdf");
+    branches.push_back("weqasdf");
+    branches.push_back("weqasdf");
+    branches.push_back("weqasdf");
+    branches.push_back("weqas7f");
     branches.push_back("weqasdf");
     branches.push_back("weqasdf");
     branches.push_back("weqasdf");
@@ -56,49 +97,10 @@ void start_application(){
     branches.push_back("weqasdf");
     branches.push_back("weqasdf");
     branches.push_back("weqasdf");
+    branches.push_back("weqas5f");
     branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
+    branches.push_back("weqasdfend");
     setBranches(branches);
-	getch();
 int c;
 	while((c = getch()) != KEY_F(1))
 
@@ -113,11 +115,31 @@ Logger::instance()->log((c));
 			case KEY_UP:
 				menu_driver(branchMenu, REQ_UP_ITEM);
 				break;
+            case KEY_BACKSPACE:
+                remove_search_char();
+                break;
+            default:
+                add_search_char(c);
 		}
                 wrefresh(branchWin);
+                wrefresh(statusWin);
+                wrefresh(searchWin);
 	}	
 
 
+}
+
+void add_search_char(char c) {
+    Logger::instance()->log("Adding cxhAR");
+    Logger::instance()->log(c);
+    searchStr+=c;
+    mvwaddch(searchWin,1,2+searchStr.length(),c);
+}
+
+void remove_search_char(){
+    mvwaddch(searchWin,1,2+searchStr.length(),' ');
+    searchStr = searchStr.substr(0, searchStr.size()-1);
+    wmove(searchWin,1,2+searchStr.length()+1);
 }
 
 void setBranches(vector <string> branches){
@@ -127,9 +149,8 @@ void setBranches(vector <string> branches){
 branchMenu = my_menu;
         set_menu_win(my_menu, branchWin);
     //set_menu_format(my_menu, 10, 1);
-            set_menu_mark(my_menu, std::itoa(addch(ACS_PI)));
+            set_menu_mark(my_menu, " * ");
 
-                WINDOW* my_menu_win = branchWin;
 //                    set_menu_sub(my_menu, derwin(my_menu_win, 5, 5, 1, 1));
                     set_menu_sub(my_menu, branchWinDer);
 //        mvwaddch(my_menu_win, 2, 0, ACS_LTEE);
