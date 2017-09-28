@@ -16,11 +16,6 @@ class Logger
 	void log(int message);
     void enableLogs();
     static Logger* instance();
-/*    static Logger* instance(){
-        if (!s_instance)
-            s_instance = new Logger;
-        return s_instance;
-    }*/
 
 };
 #endif

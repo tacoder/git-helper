@@ -18,6 +18,7 @@ void setBranches(vector <string>);
 void remove_search_char();
 void set_git_status();
 void add_search_char(char c);
+void perform_action_on_key(int);
 ITEM** getMenuItemsFromVector(vector<string>);
 WINDOW *create_newwin(int height, int width, int starty, int startx);
 
@@ -32,7 +33,6 @@ string searchStr;
 int main (){
 
     initialize_application();
-    vector<string> branches = getAllBranches();
     
     start_application();
 
@@ -42,92 +42,36 @@ int main (){
 }
 
 void start_application(){
-    vector<string> branches ;
-    branches.push_back("asdf");
-    branches.push_back("hasdfsdf");
-    branches.push_back("lartsdf");
-    branches.push_back("gayujtsdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqas3f");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqaslnig fuckign branch namedf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqas3f");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqas2f");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqas2f");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqas7f");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqas7f");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdf");
-    branches.push_back("weqas5f");
-    branches.push_back("weqasdf");
-    branches.push_back("weqasdfend");
+    vector<string> branches = GitHelper::getInstance()->getAllBranches();
     setBranches(branches);
     int c;
-    while((c = getch()) != KEY_F(1)) {
-        Logger::instance()->log("You have pressed:" );
-        Logger::instance()->log(c);
+    while((c = getch())) {
+        perform_action_on_key(c);
+    }
 
-        switch(c) {
-            case KEY_DOWN:
-                menu_driver(branchMenu, REQ_DOWN_ITEM);
-                break;
-            case KEY_UP:
-                menu_driver(branchMenu, REQ_UP_ITEM);
-                break;
-            case KEY_BACKSPACE:
-                remove_search_char();
-                break;
-            default:
-                add_search_char(c);
-        }
-        wrefresh(branchWin);
-        wrefresh(statusWin);
-        wrefresh(searchWin);
-    }    
+}
 
-
+void perform_action_on_key(int c){
+            Logger::instance()->log("You have pressed:" );
+         Logger::instance()->log(c);
+ 
+         switch(c) {
+             case KEY_DOWN:
+                 menu_driver(branchMenu, REQ_DOWN_ITEM);
+                 break;
+             case KEY_UP:
+                 menu_driver(branchMenu, REQ_UP_ITEM);
+                 break;
+             case KEY_BACKSPACE:
+                 remove_search_char();
+                 break;
+             default:
+                 add_search_char(c);
+         }
+         wrefresh(branchWin);
+         wrefresh(statusWin);
+         wrefresh(searchWin);
+ 
 }
 
 void add_search_char(char c) {

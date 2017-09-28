@@ -3,13 +3,33 @@
 #include "util.h"
 using std::vector;
 using std::string;
-vector<string> getAllBranches(){
-    vector<string> toReturn;
+GitHelper *GitHelper::s_instance;
 
-    toReturn.push_back("asdf");
-    toReturn.push_back("zxcv");
-    toReturn.push_back("qwer");
-    toReturn.push_back("hjlk");
 
-    return toReturn;
+GitHelper *GitHelper::getInstance(){
+    if (!s_instance)
+        s_instance = new GitHelper;
+    return s_instance;
+}
+
+GitHelper::GitHelper() {
+    setAllBranches();
+    setRecentBranches();
+    setCurrentStatus();
+}
+
+vector<string> GitHelper::getAllBranches(){
+    return *(new vector<string>(branches));
+}
+
+void GitHelper::setAllBranches() {
+
+}
+
+void GitHelper::setRecentBranches() {
+
+}
+
+void GitHelper::setCurrentStatus() { 
+
 }

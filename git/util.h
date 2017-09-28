@@ -9,21 +9,20 @@ using std::vector;
  * Util that handles connecting to git and getting repo information
  *
  */
-class GitUtil{
-
+class GitHelper {
     private:
-        vector<string> allBranches;
+        vector<string> branches;
         vector<string> recentBranches;
         vector<string> currentStatus;
-        string currentBranch;
-        void refresh();
+        void setAllBranches();
+        void setRecentBranches();
+        void setCurrentStatus();
+        static GitHelper *s_instance;
+        GitHelper();
     public:
+        static GitHelper* getInstance();
         vector<string> getAllBranches();
-        vector<string> getRecentBranches();
-        vector<string> getCurrentStatus();
-        string getCurrentBranch();
 };
 
-vector<string> getAllBranches();
 
 #endif
