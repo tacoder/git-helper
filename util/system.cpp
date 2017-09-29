@@ -1,5 +1,22 @@
 #include<string>
+#include<vector>
+#include<sstream>
 using std::string;
+using namespace std;
+
+vector<string> split(string str, char delimiter) {
+  vector<string> internal;
+  stringstream ss(str); // Turn the string into a stream.
+  string tok;
+ 
+  while(getline(ss, tok, delimiter)) {
+    internal.push_back(tok);
+  }
+ 
+  return *(new vector<string>(internal));
+
+}
+
 string GetStdoutFromCommand(string cmd) {
 
     string data;
