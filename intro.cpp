@@ -22,6 +22,7 @@ void perform_action_on_key(int);
 void setStatus();
 ITEM** getMenuItemsFromVector(vector<string>);
 WINDOW *create_newwin(int height, int width, int starty, int startx);
+vector<string> filterVector(vector<string>, string);
 
 // Global variable
 WINDOW * statusWin;
@@ -42,9 +43,22 @@ int main (){
     return 0;
 }
 
+void updateBranches(){
+       vector<string> branches = GitHelper::getInstance()->getAllBranches();
+       vector<string> recentBranches = GitHelper::getInstance()->getRecentBranches();
+   
+       vector<string> filteredBranches (filterVector(branches,searchStr));
+       vector<string> filteredRecentBranches(filterVector(recentBranches,searchStr));
+   
+       vector <string> displayBranches ;
+       displayBranches.insert(displayBranches.end(), filteredRecentBranches.begin(), filteredRecentBranches.end());
+       displayBranches.insert(displayBranches.end(), filteredBranches.begin(), filteredBranches.end());
+   
+       setBranches(displayBranches);
+}
+
 void start_application(){
-    vector<string> branches = GitHelper::getInstance()->getAllBranches();
-    setBranches(branches);
+    updateBranches();
     setStatus();
     int c;
     while((c = getch())) {
@@ -53,11 +67,24 @@ void start_application(){
 
 }
 
+vector<string> filterVector(vector<string> branches, string searchStr){
+    vector<string> filteredVector;
+    for(string &br : branches) {
+        int searchPos = br.find(searchStr);
+        if(searchPos >= 0){
+			Logger::instance()->log("Filtering entry: " + br + " for search str " + searchStr);
+			Logger::instance()->log(searchPos);
+            filteredVector.push_back(br);
+        }
+    }
+    return *(new vector<string>(filteredVector));
+
+}
+
 void setStatus(){
     int i = 0;
     for(string &line : GitHelper::getInstance()->getCurrentStatus()){
         mvwprintw(statusWin,++i,2,line.c_str());
-
     }
     wrefresh(statusWin);
 }
@@ -90,15 +117,18 @@ void add_search_char(char c) {
     Logger::instance()->log(c);
     searchStr+=c;
     mvwaddch(searchWin,1,2+searchStr.length(),c);
+    updateBranches();
 }
 
 void remove_search_char(){
     mvwaddch(searchWin,1,2+searchStr.length(),' ');
     searchStr = searchStr.substr(0, searchStr.size()-1);
     wmove(searchWin,1,2+searchStr.length()+1);
+    updateBranches();
 }
 
 void setBranches(vector <string> branches){
+unpost_menu(branchMenu);
     //setMenuInWindow();
     ITEM** menuItems = getMenuItemsFromVector(branches);
     MENU * my_menu = new_menu((ITEM **)menuItems);
@@ -118,6 +148,8 @@ ITEM** getMenuItemsFromVector(vector<string> menuItems){
     my_items = (ITEM **)calloc(n_choices + 1, sizeof(ITEM *));
      
     for(int i = 0; i < n_choices; ++i){
+        Logger::instance()->log("Adding into menu item:");
+        Logger::instance()->log(menuItems[i]);
         char* ca = new char[menuItems[i].size()+1];
         std::copy(menuItems[i].begin(), menuItems[i].end(), ca);
         ca[menuItems[i].size()] = '\0';

@@ -23,6 +23,8 @@ class GitHelper {
         static GitHelper* getInstance();
         vector<string> getAllBranches();
         vector<string> getCurrentStatus();
+        vector<string> getRecentBranches();
+
 };
 
 

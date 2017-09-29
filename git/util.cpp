@@ -44,3 +44,8 @@ vector<string> GitHelper::getCurrentStatus(){
     return *(new vector<string>(currentStatus));
 }
 
+vector<string> GitHelper::getRecentBranches() {
+    return *(new vector<string>(recentBranches));
+}
+
+
