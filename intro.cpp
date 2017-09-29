@@ -54,7 +54,11 @@ void start_application(){
 }
 
 void setStatus(){
-    mvwprintw(statusWin,1,1,GitHelper::getInstance()->getCurrentStatus().c_str());
+    int i = 0;
+    for(string &line : GitHelper::getInstance()->getCurrentStatus()){
+        mvwprintw(statusWin,++i,2,line.c_str());
+
+    }
     wrefresh(statusWin);
 }
 
