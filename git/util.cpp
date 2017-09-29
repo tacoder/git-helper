@@ -37,5 +37,10 @@ void GitHelper::setRecentBranches() {
 
 void GitHelper::setCurrentStatus() { 
     string command = "git status";
-    currentStatus = split(GetStdoutFromCommand(command),'\n');
+    currentStatus = GetStdoutFromCommand(command);
 }
+
+string GitHelper::getCurrentStatus(){
+    return *(new string(currentStatus));
+}
+

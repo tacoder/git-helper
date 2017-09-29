@@ -13,7 +13,7 @@ class GitHelper {
     private:
         vector<string> branches;
         vector<string> recentBranches;
-        vector<string> currentStatus;
+        string currentStatus;
         void setAllBranches();
         void setRecentBranches();
         void setCurrentStatus();
@@ -22,6 +22,7 @@ class GitHelper {
     public:
         static GitHelper* getInstance();
         vector<string> getAllBranches();
+        string getCurrentStatus();
 };
 
 

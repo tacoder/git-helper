@@ -19,6 +19,7 @@ void remove_search_char();
 void set_git_status();
 void add_search_char(char c);
 void perform_action_on_key(int);
+void setStatus();
 ITEM** getMenuItemsFromVector(vector<string>);
 WINDOW *create_newwin(int height, int width, int starty, int startx);
 
@@ -44,11 +45,17 @@ int main (){
 void start_application(){
     vector<string> branches = GitHelper::getInstance()->getAllBranches();
     setBranches(branches);
+    setStatus();
     int c;
     while((c = getch())) {
         perform_action_on_key(c);
     }
 
+}
+
+void setStatus(){
+    mvwprintw(statusWin,1,1,GitHelper::getInstance()->getCurrentStatus().c_str());
+    wrefresh(statusWin);
 }
 
 void perform_action_on_key(int c){
