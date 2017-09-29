@@ -1,9 +1,8 @@
-Installations for Ubuntu:
+## Installations for Ubuntu:
 
 apt install libncurses5-dev libncursesw5-dev
 
-to compile:
-make
+### To compile and run:
+make && ./intro.out
 
-to run
-./intro.out
+### Documentation [here](http://www.ibiblio.org/pub/Linux/docs/HOWTO/other-formats/html_single/NCURSES-Programming-HOWTO.html)
