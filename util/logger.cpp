@@ -9,7 +9,7 @@ void Logger::log(string message){
 
 void Logger::enableLogs(){
 	logEnabled = true;
-	lout.open("git-helper.log", std::ios_base::app);
+	lout.open("/tmp/git-helper.log", std::ios_base::app);
 }
 
 Logger *Logger::s_instance;

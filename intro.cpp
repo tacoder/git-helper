@@ -5,6 +5,7 @@
 #include "util/logger.h"
 #include "util/system.h"
 #include <menu.h>
+#include<algorithm>
 using namespace std;
 
 // Function definitions
@@ -20,6 +21,7 @@ void set_git_status();
 void add_search_char(char c);
 void perform_action_on_key(int);
 void setStatus();
+bool validBranchChar(char);
 ITEM** getMenuItemsFromVector(vector<string>);
 WINDOW *create_newwin(int height, int width, int starty, int startx);
 vector<string> filterVector(vector<string>, string);
@@ -32,6 +34,11 @@ WINDOW * searchWin;
 MENU * branchMenu;
 string searchStr;
 
+bool validBranchChar(char c){
+    if(c <= 40 || c >= 127) return false;
+    if(c=='~' || c=='^' || c==':' || c=='?' || c=='*' || c=='[') return false;
+  return true; 
+}
 int main (){
 
     initialize_application();
@@ -66,11 +73,23 @@ void start_application(){
     }
 
 }
+/*
+ * Find Case Insensitive Sub String in a given substring
+ */
+size_t findCaseInsensitive(std::string data, std::string toSearch, size_t pos = 0)
+{
+	// Convert complete given String to lower case
+	std::transform(data.begin(), data.end(), data.begin(), ::tolower);
+	// Convert complete given Sub String to lower case
+	std::transform(toSearch.begin(), toSearch.end(), toSearch.begin(), ::tolower);
+	// Find sub string in given string
+	return data.find(toSearch, pos);
+}
 
 vector<string> filterVector(vector<string> branches, string searchStr){
     vector<string> filteredVector;
     for(string &br : branches) {
-        int searchPos = br.find(searchStr);
+        int searchPos = findCaseInsensitive(br,searchStr);
         if(searchPos >= 0){
 			Logger::instance()->log("Filtering entry: " + br + " for search str " + searchStr);
 			Logger::instance()->log(searchPos);
@@ -104,7 +123,7 @@ void perform_action_on_key(int c){
                  remove_search_char();
                  break;
              default:
-                 add_search_char(c);
+                 if(validBranchChar(c)) add_search_char(c);
          }
          wrefresh(branchWin);
          wrefresh(statusWin);
